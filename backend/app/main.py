@@ -7,10 +7,10 @@ from PIL import Image, ImageOps
 import numpy as np
 from io import BytesIO
 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for the entire app
+CORS(app, origins="*", support_credentials=True)  # Enable CORS for the entire app
 # api = Blueprint('api', __name__, url_prefix='/api')
 
 app.config["ROOT_FOLDER"] = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +19,7 @@ app.config["UPLOAD_FOLDER"] = "static/processing/"
 app.secret_key = "some_secret_key"  # in a real app this would come from an ENV var
 
 @app.route("/upload", methods=["POST"])
+
 def upload_image():
 
     if "image" not in request.files:
@@ -179,4 +180,4 @@ def _mark_surrounding_pixels_and_save_image(
 # app.register_blueprint(api)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
