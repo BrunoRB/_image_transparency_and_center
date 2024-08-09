@@ -115,6 +115,8 @@ export default function Home() {
 
       const data = await response.json();
 
+      setPickedColor(null);
+
       setImage({url: data.file_url, name: data.file_name})
     } catch (error) {
       console.error("Error processing image:", error);
@@ -224,6 +226,7 @@ export default function Home() {
             <button
               onClick={handleFindVisualCenter}
               className="bg-blue-500 text-white py-2 px-4 rounded w-full"
+              style={{opacity: !loading ? 1 : 0.5}}
               disabled={loading}
             >
               Find Visual Center
@@ -240,13 +243,15 @@ export default function Home() {
             />
           </div>
         )}
-        <hr/>
-        {pickedColor && <button
+
+        {<button
           onClick={handleSetTransparency}
-          className="bg-blue-500 text-white py-2 px-4 rounded w-full"
-          disabled={loading}
+          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded w-full"
+          // make it less opaque if no color
+          style={{opacity: pickedColor && !loading ? 1 : 0.5}}
+          disabled={loading || !pickedColor}
         >
-          Set Transparency
+          Set Transparency {!pickedColor && "(Pick a color by clicking on the image)"}
         </button>}
       </div>
     </main>

@@ -1,13 +1,13 @@
 import requests
 import os
 import logging
-from flask import Flask, flash, request, Blueprint
+from flask import Flask, flash, request
 from werkzeug.utils import secure_filename
 from PIL import Image, ImageOps
 import numpy as np
 from io import BytesIO
 
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, origins="*", support_credentials=True)  # Enable CORS for the entire app
@@ -15,6 +15,11 @@ CORS(app, origins="*", support_credentials=True)  # Enable CORS for the entire a
 
 app.config["ROOT_FOLDER"] = os.path.dirname(os.path.abspath(__file__))
 app.config["UPLOAD_FOLDER"] = "static/processing/"
+
+# mkdir -p static/processing
+
+if not os.path.exists(os.path.join(app.config["ROOT_FOLDER"], app.config["UPLOAD_FOLDER"])):
+    os.makedirs(os.path.join(app.config["ROOT_FOLDER"], app.config["UPLOAD_FOLDER"]))
 
 app.secret_key = "some_secret_key"  # in a real app this would come from an ENV var
 

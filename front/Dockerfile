@@ -1,13 +1,17 @@
 # front/Dockerfile
-FROM node:19-alpine
+FROM node:19
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+
+ENV NODE_ENV=development
+
+RUN npm install --include=dev
 
 COPY . .
 
 EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
+
